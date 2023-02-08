@@ -1,55 +1,69 @@
-### Objective
+# aidHere Time Tracker 
 
-In this challenge, your task is to retrieve data from an external API and render it like the provided designs. Use Dart and Flutter.
+## Functionality 
 
-### Brief
+Fetches user records from API for first launch, caches it and allows user to add more records or update previous records. 
 
-Your challenge is to build out this personal time-tracking dashboard. Your task is to build the project to the designs inside the `/design` folder. You will find a mobile version of the design. The design is in JPG static format. Using JPGs will mean that you'll need to use your best judgment for styles such as `font-size`, `padding`, and `margin`. You will find all the required assets in the `/images` folder. The assets are already optimized. Fetch data from the following endpoint:
+- Allows the user to view the reports for different periods i.e. Daily, Weekly and Monthly.
 
-    https://wookie.codesubmit.io/time-tracking
+- Allows user to switch between dark mode and light mode
 
-### Expected behavior
 
-Your users should be able to:
+        After First restart, mock data for the day before yesterday is added, user can see the records and trends for the last three days. 
 
--   [ ✔️ ] Make sure the design is realised as shown in an Android or iOS simulator 
--   [ ✔️ ] Switch between viewing Daily, Weekly, and Monthly stats
--   [ ✔️ ] The text for the previous period's time should change based on the active timeframe. For Daily, it should read "Yesterday" e.g "Yesterday - 2hrs". For Weekly, it should read "Last Week," e.g. "Last Week - 32hrs". It should read "Last Month" for monthly, e.g., "Last Month - 19hrs".
 
-There is also a `style-guide.md` file containing the information you'll need, such as color palette and fonts.
+![Default Layout](flutter_02.png)
+![Add Record](flutter_04.png)
 
-### Extra Credit
 
-If you complete the expected behavior described above you could extend the functionality of the app (in no particular order):
 
-[ ✔️ ] Allow switching between light and dark mode (use your judgment on sensible colors)
- 
-[ ✔️ ]  Add local data persistence to allow offline mode
+## **Implementation**
 
-[ ✔️ ]  Store result restrieved from given endpoint locally
+Implemented using BLoC Cubit as state management with HydratedCubit to allow local storage. 
 
-[ ✔️ ]  If local data is present, no need to call endpoint for data retrieval
+Freezed generator is used to generate models and cubits. This helps us with immutability and easy state handling. 
 
-[ ✔️ ]  Allow adding new data locally (no post endpoint integration)
+Dio is used for API requests. 
 
-[  ]  Mock data and show trends / development
 
-[ ✔️ ] Fake additional data for previous days / weeks / months and show the latest data compared to previous period (e.g. Yesterday 2 hours + 25% compared to day before)
-  
+## **Cubits**
+---
+### App Cubit
 
-### Evaluation Criteria
+This is used for handling the darkMode configuration and stores user preference after the app closes. 
 
--   **Dart** Best Practices
--   Show us your work through your commit history
--   Completeness: did you complete the features?
--   Correctness: does the functionality act in sensible, thought-out ways?
--   Maintainability: is it written in a clean, maintainable way?
--   Testing: is the system adequately tested?
+---
+### Tracker Cubit 
 
-### CodeSubmit
+This cubit fetches user records from the API, saves them to local storage for later usage, mocks user data for the day before on app relaunch. 
 
-Please organize, design, test, and document your code as if it were going into production - then push your changes to the master branch. After you have pushed your code, you may submit the assignment on the assignment page.
+---
+## **Repository**
 
-All the best and happy coding!
+Handles the API request handling, initialized within the Tracker cubit. 
 
-The aidhere GmbH Team
+
+--- 
+
+## **Architecture**
+
+CLEAN BLoC Architecture, 
+
+- Core 
+    - Constants  -- App Constant values
+    - Models  -- Entities
+- Domain
+    - API
+    - Cubits
+    - Repository 
+- UI 
+    - Home Screen 
+        - widgets/ -- Subwidgets for the parent screen. 
+    - widgets/ -- Sub-Widgets for the App
+
+
+
+---
+## **Testing**
+
+BLoC Test added for both Cubits. 
