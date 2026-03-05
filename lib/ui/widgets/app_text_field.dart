@@ -120,7 +120,7 @@ class _AppTextFieldState extends State<AppTextField> {
             .bodyMedium!
             .copyWith(color: theme.primaryColorDark),
         suffixIcon: widget.isLocationField
-            ? Icon(Icons.location_pin, color: theme.backgroundColor)
+            ? Icon(Icons.location_pin, color: theme.colorScheme.surface)
             : sized(w: 10),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(widget.borderRadius),

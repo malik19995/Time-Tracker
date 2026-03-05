@@ -18,7 +18,7 @@ class UserCard extends StatelessWidget {
     required this.selected,
   });
 
-  _changeSelected(BuildContext context, String newSelect) {
+  void _changeSelected(BuildContext context, String newSelect) {
     context.read<TrackerCubit>().switchSelected(newSelect);
   }
 

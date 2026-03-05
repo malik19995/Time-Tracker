@@ -1,7 +1,7 @@
 part of 'tracker_cubit.dart';
 
 @Freezed(makeCollectionsUnmodifiable: false)
-class TrackerState with _$TrackerState {
+abstract class TrackerState with _$TrackerState {
   const factory TrackerState.initial() = _Initial;
 
   const factory TrackerState.loading() = _Loading;

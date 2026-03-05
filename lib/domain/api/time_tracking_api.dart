@@ -6,9 +6,9 @@ class TimeTrackingAPI {
   Dio get dio => Dio(
         BaseOptions(
           baseUrl: baseUrl,
-          sendTimeout: 30000,
-          connectTimeout: 50000,
-          receiveTimeout: 50000,
+          sendTimeout: const Duration(seconds: 30),
+          connectTimeout: const Duration(seconds: 50),
+          receiveTimeout: const Duration(seconds: 50),
           contentType: 'application/json',
           validateStatus: (int? s) => s! < 500,
         ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logger/logger.dart';
 
@@ -21,7 +21,7 @@ extension CapExtension on String {
 ///
 ///
 /// SizedBox shorthand
-sized({double? h, double? w}) => SizedBox(
+SizedBox sized({double? h, double? w}) => SizedBox(
       height: h ?? 0,
       width: w ?? 0,
     );
@@ -29,18 +29,19 @@ sized({double? h, double? w}) => SizedBox(
 ///
 ///
 /// const Spacer shorthand
-spacer() => const Spacer();
+Spacer spacer() => const Spacer();
 
 ///
 ///
 /// Utility - To set status and navigation bar colors
-setStatusBarColors(BuildContext context, bool isDark) {
-  FlutterStatusbarcolor.setStatusBarColor(
-      Theme.of(context).scaffoldBackgroundColor);
-  FlutterStatusbarcolor.setNavigationBarColor(
-      Theme.of(context).scaffoldBackgroundColor);
-  FlutterStatusbarcolor.setNavigationBarWhiteForeground(isDark ? true : false);
-  FlutterStatusbarcolor.setStatusBarWhiteForeground(isDark ? true : false);
+void setStatusBarColors(BuildContext context, bool isDark) {
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor: Theme.of(context).scaffoldBackgroundColor,
+    systemNavigationBarColor: Theme.of(context).scaffoldBackgroundColor,
+    statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
+    systemNavigationBarIconBrightness:
+        isDark ? Brightness.light : Brightness.dark,
+  ));
 }
 
 ///

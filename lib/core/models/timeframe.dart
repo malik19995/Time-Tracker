@@ -4,7 +4,7 @@ part 'timeframe.freezed.dart';
 part 'timeframe.g.dart';
 
 @unfreezed
-class TimeFrame with _$TimeFrame {
+abstract class TimeFrame with _$TimeFrame {
   factory TimeFrame({
     required int current,
     required int previous,

@@ -42,7 +42,7 @@ class _AddUpdateDialogState extends State<AddUpdateDialog> {
         horizontal: 40,
         vertical: 20,
       ),
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       alignment: Alignment.center,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -105,7 +105,7 @@ class _AddUpdateDialogState extends State<AddUpdateDialog> {
     );
   }
 
-  _getCategoryFields(BuildContext context, String period) {
+  Widget _getCategoryFields(BuildContext context, String period) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

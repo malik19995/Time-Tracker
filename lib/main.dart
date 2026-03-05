@@ -2,7 +2,7 @@ import 'package:app/core/constants/colors.dart';
 import 'package:app/domain/cubits/app_cubit/app_cubit.dart';
 import 'package:app/domain/cubits/tracker_cubit/tracker_cubit.dart';
 import 'package:app/domain/repository/tracker/tracker_repo.dart';
-import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,26 +11,25 @@ import 'package:path_provider/path_provider.dart';
 
 import 'ui/home/home.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   HydratedBloc.storage = await HydratedStorage.build(
-    storageDirectory: await getTemporaryDirectory(),
+    storageDirectory: kIsWeb
+        ? HydratedStorageDirectory.web
+        : HydratedStorageDirectory((await getTemporaryDirectory()).path),
   );
-  runApp(MultiBlocProvider(
-    providers: [
-      BlocProvider(
-        create: (context) => AppCubit(),
-      ),
-      BlocProvider(
-        create: (context) => TrackerCubit(
-          ImplTrackerRepository(),
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => AppCubit()),
+        BlocProvider(
+          create: (context) => TrackerCubit(ImplTrackerRepository()),
         ),
-      ),
-    ],
-    child: const MyApp(),
-  ));
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -53,7 +52,7 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  getTheme(bool darkMode) {
+  ThemeData getTheme(bool darkMode) {
     return ThemeData(
       useMaterial3: true,
       textTheme: TextTheme(
@@ -62,31 +61,28 @@ class MyApp extends StatelessWidget {
           fontSize: 18,
           fontWeight: FontWeight.w100,
         ),
-        bodySmall: GoogleFonts.rubik(
-          fontSize: 16,
-          fontWeight: FontWeight.w100,
-        ),
+        bodySmall: GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.w100),
       ),
       primaryTextTheme: TextTheme(
-        bodyLarge: GoogleFonts.rubik(
-          fontSize: 24,
-        ),
+        bodyLarge: GoogleFonts.rubik(fontSize: 24),
         bodyMedium: GoogleFonts.rubik(
           fontSize: 18,
           fontWeight: FontWeight.w100,
         ),
-        bodySmall: GoogleFonts.rubik(
-          fontSize: 16,
-          fontWeight: FontWeight.w100,
-        ),
+        bodySmall: GoogleFonts.rubik(fontSize: 16, fontWeight: FontWeight.w100),
       ),
-      scaffoldBackgroundColor:
-          darkMode ? AppColors.veryDarkBlue : AppColors.desaturatedBlue,
+      scaffoldBackgroundColor: darkMode
+          ? AppColors.veryDarkBlue
+          : AppColors.desaturatedBlue,
       primaryColor: darkMode ? AppColors.darkBlue : AppColors.paleBlue,
       primaryColorLight: darkMode ? AppColors.paleBlue : AppColors.darkBlue,
       primaryColorDark: darkMode ? AppColors.white : AppColors.veryDarkBlue,
       secondaryHeaderColor: AppColors.white,
-      backgroundColor: darkMode ? AppColors.veryDarkBlue : AppColors.paleBlue,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: AppColors.blue,
+        brightness: darkMode ? Brightness.dark : Brightness.light,
+        surface: darkMode ? AppColors.veryDarkBlue : AppColors.paleBlue,
+      ),
     );
   }
 }

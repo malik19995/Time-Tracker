@@ -46,32 +46,24 @@ void connectAndListen() {
     logger.e(s.toString());
   }
 
-  if (socket != null) {
-    socket.onConnect((_) {
-      logger.e('connected');
+  socket.onConnect((_) {
+    logger.e('connected');
+    socket.emit('connect', 'Client connected');
+  });
 
-      socket.emit('connect', 'Client connected');
-    });
+  socket.onConnectError((data) {
+    if (data is SocketException) {
+      log(data.message);
+      log(data.osError?.message ?? 'osErr');
+      log(data.address?.host ?? 'host');
+    } else {
+      logger.e(data);
+    }
+  });
 
-    socket.onConnectError((data) {
-      print('---------------------------');
-      if (data is SocketException) {
-        log(data.message);
-        log(data.osError?.message ?? 'osErr');
-        log(data.address?.host ?? 'host');
-      } else {
-        print('---------------------------');
-        print(data);
-      }
-    });
-    socket.onConnecting((data) {
-      print('---------------------------');
-      print(data);
-    });
-    //When an event recieved from server, data is added to the stream
-    socket.on('out-image-event', (data) => streamSocket.addResponse);
-    socket.onDisconnect((_) => log('disconnect'));
-  }
+  //When an event recieved from server, data is added to the stream
+  socket.on('out-image-event', (data) => streamSocket.addResponse);
+  socket.onDisconnect((_) => log('disconnect'));
 }
 
 class StreamPage extends StatefulWidget {
@@ -85,7 +77,7 @@ class _StreamPageState extends State<StreamPage> {
   late CameraController controller;
   final ValueNotifier<bool> initialized = ValueNotifier(false);
 
-  initCameras() async {
+  Future<void> initCameras() async {
     _cameras = await availableCameras();
     controller = CameraController(
       _cameras[1],
@@ -120,10 +112,10 @@ class _StreamPageState extends State<StreamPage> {
       if (e is CameraException) {
         switch (e.code) {
           case 'CameraAccessDenied':
-            print('User denied camera access.');
+            debugPrint('User denied camera access.');
             break;
           default:
-            print('Handle other errors.');
+            debugPrint('Handle other errors.');
             break;
         }
       }

@@ -6,7 +6,7 @@ part 'category_record.freezed.dart';
 part 'category_record.g.dart';
 
 @Freezed(makeCollectionsUnmodifiable: false)
-class CategoryRecord with _$CategoryRecord {
+abstract class CategoryRecord with _$CategoryRecord {
   factory CategoryRecord({
     required final String title,
     required Map<String, TimeFrame> timeframes,

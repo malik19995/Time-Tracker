@@ -1,4 +1,3 @@
-import 'package:app/domain/cubits/app_cubit/app_cubit.dart';
 import 'package:app/domain/cubits/tracker_cubit/tracker_cubit.dart';
 import 'package:app/ui/home/widgets/add_update_dialog.dart';
 import 'package:app/ui/home/widgets/tracker_card.dart';
@@ -64,6 +63,7 @@ class MyHomePage extends StatelessWidget {
             Future.delayed(
               const Duration(milliseconds: 2500),
             ).then((value) {
+              if (!context.mounted) return;
               context.read<TrackerCubit>().fetchAPIResults();
             });
             return subPage('splash');
